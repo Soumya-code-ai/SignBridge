@@ -8,7 +8,8 @@
       "outputDirectory": "dist/signbridge"
     },
     "backend": {
-      "root": "backend"
+      "root": "backend",
+      "entrypoint": "api/index.py"
     }
   },
   "rewrites": [
