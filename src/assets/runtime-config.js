@@ -1,3 +1,4 @@
-// Set the public WebSocket origin for the deployed FastAPI service.
-// Leave empty for local development, which uses ws://localhost:8000.
+// Optional override for a separately hosted backend.
+// Leave empty for Vercel multi-service deployment: the app uses /api.
+// For a WebSocket-capable host, use ws:// or wss:// here.
 window.__SIGNBRIDGE_BACKEND_URL__ = '';

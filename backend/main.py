@@ -14,6 +14,7 @@ import json
 import logging
 import os
 from collections import deque
+from typing import Any
 
 import numpy as np
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -49,6 +50,7 @@ logger.info("Loaded model: %s", type(model).__name__)
 
 
 @app.get("/health")
+@app.get("/api/health")
 def health():
     return {
         "status": "ok",
@@ -58,8 +60,36 @@ def health():
 
 
 @app.get("/languages")
+@app.get("/api/languages")
 def languages():
     return {"languages": sorted(SUPPORTED_LANGUAGES)}
+
+
+@app.post("/translate")
+@app.post("/api/translate")
+def translate_http(payload: dict[str, Any]):
+    """Stateless prediction endpoint for Vercel's serverless runtime.
+
+    Vercel functions cannot hold a WebSocket connection, so the frontend
+    sends its current 45-frame window over HTTP when deployed there.
+    """
+    language = str(payload.get("language", "isl")).lower()
+    points = payload.get("keypoints")
+    if language not in SUPPORTED_LANGUAGES:
+        return {"type": "error", "error": "Unsupported sign language"}
+    if not isinstance(points, list) or len(points) != WINDOW_SIZE * NUM_KEYPOINTS * 2:
+        return {"type": "error", "error": "Expected a complete keypoint window"}
+
+    window = np.array(points, dtype=np.float32).reshape(WINDOW_SIZE, NUM_KEYPOINTS, 2)
+    gloss, confidence = model.predict(window)
+    if gloss is None:
+        return {"type": "idle", "language": language}
+    return {
+        "type": "prediction",
+        "gloss": gloss,
+        "confidence": confidence,
+        "language": language,
+    }
 
 
 @app.websocket("/ws/translate")

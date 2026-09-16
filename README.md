@@ -187,26 +187,26 @@ To build for deployment:
 npm run build:prod   # outputs to dist/signbridge
 ```
 
-### Deploy the frontend to Vercel
+### Deploy frontend and backend to Vercel
 
-The repository includes `vercel.json`, so Vercel can deploy the Angular
-frontend directly from the repository:
+The repository includes a multi-service `vercel.json`. Vercel deploys
+the Angular frontend and the FastAPI serverless backend from one
+repository:
 
 1. Import the repository into Vercel.
-2. Keep the framework preset as **Angular**. The configured build command
-   is `npm run build:prod` and the output directory is `dist/signbridge`.
-3. After deploying the FastAPI service, open
-   `src/assets/runtime-config.js` and set
-   `window.__SIGNBRIDGE_BACKEND_URL__` to its public WebSocket origin,
-   for example `wss://api.example.com`. Commit and redeploy the frontend.
-4. Set `SIGNBRIDGE_ALLOWED_ORIGINS` on the backend to the Vercel origin,
-   for example `https://signbridge.example.com`. Multiple origins can be
-   separated with commas.
+2. Use the repository root as the project root. The configured frontend
+   service builds with `npm run build:prod` into `dist/signbridge`; the
+   backend service uses `backend/api/index.py` as its Python entrypoint.
+3. Leave `src/assets/runtime-config.js` empty for the combined deployment.
+   The browser automatically posts landmark windows to `/api/translate`,
+   which Vercel routes to the backend service.
+4. Set `SIGNBRIDGE_ALLOWED_ORIGINS` only when the backend is also called
+   from another origin. Multiple origins can be separated with commas.
 
-Vercel hosts the static Angular application; the FastAPI WebSocket service
-must run on a WebSocket-capable host separately. Use `wss://` when the
-frontend is served over HTTPS. Leave the runtime URL empty for local
-development, where the app uses `ws://localhost:8000`.
+The Vercel backend uses HTTP because Vercel serverless functions do not
+keep WebSocket connections alive. Local development and dedicated
+WebSocket hosting continue to use `/ws/translate` automatically when the
+runtime backend URL is configured with `ws://` or `wss://`.
 
 ---
 
