@@ -189,14 +189,14 @@ npm run build:prod   # outputs to dist/signbridge
 
 ### Deploy frontend and backend to Vercel
 
-The repository includes a multi-service `vercel.json`. Vercel deploys
-the Angular frontend and the FastAPI serverless backend from one
-repository:
+The repository uses one Vercel project: Angular is served at `/` and
+FastAPI is exposed as a serverless function under `/api`.
 
 1. Import the repository into Vercel.
 2. Use the repository root as the project root. The configured frontend
-   service builds with `npm run build:prod` into `dist/signbridge`; the
-   backend service uses `backend/api/index.py` as its Python entrypoint.
+   builds with `npm run build:prod` into `dist/signbridge`; Vercel uses
+   `api/index.py` for the backend function and installs the root
+   `requirements.txt`.
 3. Leave `src/assets/runtime-config.js` empty for the combined deployment.
    The browser automatically posts landmark windows to `/api/translate`,
    which Vercel routes to the backend service.

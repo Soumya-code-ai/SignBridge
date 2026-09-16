@@ -20,7 +20,10 @@ import numpy as np
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from model import load_model
+try:
+    from .model import load_model
+except ImportError:
+    from model import load_model
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("signbridge-backend")

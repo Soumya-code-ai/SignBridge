@@ -1,24 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "frontend": {
-      "root": ".",
-      "framework": "angular",
-      "buildCommand": "npm run build:prod",
-      "outputDirectory": "dist/signbridge"
-    },
-    "backend": {
-      "root": "backend",
-      "entrypoint": "api/index.py"
-    }
-  },
+  "buildCommand": "npm run build:prod",
+  "outputDirectory": "dist/signbridge",
+  "framework": "angular",
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": {
-        "type": "service",
-        "service": "backend"
-      }
+      "destination": "/api/index.py"
     },
     {
       "source": "/((?!assets/|api/|.*\\.[^/]+$).*)",
