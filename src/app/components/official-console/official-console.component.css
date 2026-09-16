@@ -1,0 +1,85 @@
+.official {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.75rem;
+  border-radius: var(--radius-console);
+  box-shadow: var(--shadow-lift);
+  border-color: var(--blue-300);
+}
+
+.official__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.official__error {
+  color: var(--clay-500);
+  font-size: 0.9rem;
+}
+
+.official__transcript {
+  flex: 1;
+  min-height: 200px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding-right: 0.25rem;
+}
+
+.official__empty {
+  color: var(--ink-400);
+  font-size: 0.95rem;
+  padding: 1rem 0;
+}
+
+.official__entry {
+  background: var(--blue-100);
+  border-radius: var(--radius-console);
+  padding: 0.65rem 0.9rem;
+  max-width: 90%;
+}
+
+.official__entry.is-citizen {
+  background: var(--sage-100);
+  align-self: flex-end;
+  text-align: right;
+}
+
+.official__entry-source {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--ink-400);
+  margin-bottom: 0.2rem;
+}
+
+.official__footer {
+  border-top: 1px solid var(--sage-200);
+  padding-top: 1rem;
+}
+
+.official__passcode {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.official__passcode label {
+  font-size: 0.85rem;
+  color: var(--ink-600);
+}
+
+.official__passcode input {
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid var(--sage-200);
+  background: #fff;
+}

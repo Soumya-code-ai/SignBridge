@@ -1,0 +1,65 @@
+<section class="citizen glass">
+  <header class="citizen__header">
+    <div>
+      <p class="eyebrow">Citizen side</p>
+      <h2>SignBridge terminal</h2>
+      <p class="citizen__hint">Sign to be heard, or use the assistant when typing is easier.</p>
+    </div>
+    <label class="citizen__language">
+      <span>Sign language</span>
+      <select [(ngModel)]="selectedLanguage" aria-label="Select sign language">
+        <option *ngFor="let language of languageOptions" [ngValue]="language">
+          {{ language.name }}
+        </option>
+      </select>
+    </label>
+  </header>
+
+  <div class="citizen__viewport" [class.is-active]="state === 'active'">
+    <video #video class="citizen__video" playsinline muted></video>
+    <canvas #overlay width="640" height="480" class="citizen__overlay"></canvas>
+
+    <div class="citizen__empty" *ngIf="state === 'idle'">
+      <p>Turn on the camera to begin signing.</p>
+      <button class="btn btn--primary" (click)="startCamera()">Start camera</button>
+    </div>
+
+    <div class="citizen__empty" *ngIf="state === 'loading'">
+      <p>Loading the translation model&hellip;</p>
+    </div>
+
+    <div class="citizen__empty citizen__empty--error" *ngIf="state === 'error'">
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn--primary" (click)="startCamera()">Try again</button>
+    </div>
+  </div>
+
+  <div class="citizen__caption" *ngIf="currentGesture">
+    <span class="citizen__caption-label">Recognised sign</span>
+    <p class="citizen__caption-text">{{ currentGesture.spokenPhrase }}</p>
+  </div>
+
+  <div class="citizen__caption citizen__caption--incoming" *ngIf="officialCaption">
+    <span class="citizen__caption-label">Official is saying</span>
+    <p class="citizen__caption-text">{{ officialCaption }}</p>
+  </div>
+
+  <details class="citizen__vocab">
+    <summary>Signs this terminal understands</summary>
+    <ul>
+      <li *ngFor="let g of vocabulary">{{ g.label }}</li>
+    </ul>
+  </details>
+
+  <button class="btn btn--ghost citizen__type-toggle" (click)="toggleChatbot()">
+    {{ showChatbot ? 'Close assistant' : 'Prefer to type or tap instead?' }}
+  </button>
+
+  <app-chatbot-widget *ngIf="showChatbot"></app-chatbot-widget>
+
+  <button class="btn btn--ghost citizen__type-toggle" (click)="toggleWlasl()">
+    {{ showWlasl ? 'Hide extended recognition' : 'Open extended recognition' }}
+  </button>
+
+  <app-wlasl-translator *ngIf="showWlasl" [languageCode]="selectedLanguage.code"></app-wlasl-translator>
+</section>

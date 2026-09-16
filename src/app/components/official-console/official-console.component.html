@@ -1,0 +1,42 @@
+<section class="official glass">
+  <header class="official__header">
+    <h2>Official Console</h2>
+    <button class="btn btn--secondary" [class.is-live]="isListening" (click)="toggleMic()">
+      {{ isListening ? 'Stop speaking to citizen' : 'Speak to citizen' }}
+    </button>
+  </header>
+
+  <p class="official__error" *ngIf="recognitionError">{{ recognitionError }}</p>
+
+  <div class="official__transcript" aria-live="polite">
+    <p class="official__empty" *ngIf="(transcript$ | async)?.length === 0">
+      The transcript will appear here once the citizen starts signing.
+    </p>
+    <div
+      class="official__entry"
+      *ngFor="let entry of transcript$ | async"
+      [class.is-citizen]="entry.source === 'citizen'"
+    >
+      <span class="official__entry-source">{{ entry.source === 'citizen' ? 'Citizen' : 'You' }}</span>
+      <p>{{ entry.text }}</p>
+    </div>
+  </div>
+
+  <footer class="official__footer">
+    <button
+      class="btn btn--ghost"
+      (click)="revealStaffPanel()"
+      *ngIf="!showPasscodeInput && !showAnalytics"
+    >
+      Staff panel
+    </button>
+
+    <form class="official__passcode" *ngIf="showPasscodeInput" (ngSubmit)="submitPasscode()">
+      <label for="passcode">Staff passcode</label>
+      <input id="passcode" type="password" [(ngModel)]="passcode" name="passcode" autocomplete="off" />
+      <button class="btn btn--primary" type="submit">Unlock</button>
+    </form>
+  </footer>
+
+  <app-analytics-dashboard *ngIf="showAnalytics" (close)="closeAnalytics()"></app-analytics-dashboard>
+</section>

@@ -1,0 +1,17 @@
+<div class="chatbot glass">
+  <div class="chatbot__log" aria-live="polite">
+    <div class="chatbot__msg" *ngFor="let m of messages" [class.is-user]="m.role === 'user'">
+      <p>{{ m.text }}</p>
+    </div>
+  </div>
+
+  <div class="chatbot__quick">
+    <button class="chip" *ngFor="let q of quickPrompts" (click)="send(q)">{{ q }}</button>
+  </div>
+
+  <form class="chatbot__input" (ngSubmit)="send()">
+    <label class="sr-only" for="chat-input">Type your question</label>
+    <input id="chat-input" type="text" [(ngModel)]="draft" name="draft" placeholder="Type a question here" />
+    <button class="btn btn--primary" type="submit">Send</button>
+  </form>
+</div>

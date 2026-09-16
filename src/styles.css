@@ -1,0 +1,148 @@
+/* ---------------------------------------------------------------
+   SignBridge design tokens
+   A calm, low-cognitive-load palette for a public service counter:
+   sage greens for the citizen side, muted blue for the official
+   side, warm off-white ground, restrained clay accent for alerts.
+------------------------------------------------------------------ */
+:root {
+  --sage-50: #F4F7F3;
+  --sage-100: #E6EEE3;
+  --sage-200: #C9DAC7;
+  --sage-400: #8FAE8C;
+  --sage-500: #6B8F71;
+  --sage-700: #3F5D45;
+
+  --blue-100: #E4EEF3;
+  --blue-300: #B9D2E0;
+  --blue-500: #7FA8C9;
+  --blue-700: #3E6B87;
+
+  --ink-900: #24332A;
+  --ink-600: #4C5C51;
+  --ink-400: #74857A;
+
+  --clay-500: #C97B63;
+
+  --glass-fill: rgba(255, 255, 255, 0.55);
+  --glass-fill-strong: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.75);
+
+  --shadow-soft: 0 12px 32px rgba(63, 93, 69, 0.12);
+  --shadow-lift: 0 18px 40px rgba(43, 66, 76, 0.16);
+
+  --radius-organic: 32px;
+  --radius-console: 16px;
+  --radius-pill: 999px;
+
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, -apple-system, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; margin: 0; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink-900);
+  background: radial-gradient(circle at 15% 10%, var(--sage-100), var(--sage-50) 55%);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0;
+  color: var(--ink-900);
+}
+
+p { margin: 0; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+:focus-visible {
+  outline: 3px solid var(--blue-500);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+.glass {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Shared button system -------------------------------------------------- */
+.btn {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-pill);
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  background: var(--sage-500);
+  color: var(--sage-50);
+  box-shadow: var(--shadow-soft);
+}
+.btn--primary:hover { background: var(--sage-700); }
+
+.btn--secondary {
+  background: var(--blue-500);
+  color: #fff;
+  box-shadow: var(--shadow-soft);
+}
+.btn--secondary:hover { background: var(--blue-700); }
+.btn--secondary.is-live {
+  background: var(--clay-500);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--ink-600);
+  border: 1.5px solid var(--sage-200);
+}
+.btn--ghost:hover { background: var(--sage-100); }
+
+.chip {
+  background: var(--glass-fill-strong);
+  border: 1px solid var(--sage-200);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  color: var(--ink-600);
+  transition: background 150ms ease;
+}
+.chip:hover { background: var(--sage-100); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

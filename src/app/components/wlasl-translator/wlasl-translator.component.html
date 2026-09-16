@@ -1,0 +1,42 @@
+<div class="wlasl glass">
+  <header class="wlasl__header">
+    <div>
+      <p class="eyebrow">Landmark recognition</p>
+      <h3>Extended vocabulary</h3>
+    </div>
+    <span class="wlasl__badge" [class.is-live]="connectionState === 'open'">
+      {{ connectionState === 'open' ? 'Backend connected' : 'Backend ' + connectionState }}
+    </span>
+  </header>
+
+  <p class="wlasl__hint">Profile: <strong>{{ languageCode | uppercase }}</strong> &middot; uses stable hand landmarks and reports only known matches.</p>
+
+  <div class="wlasl__viewport">
+    <video #wlaslVideo class="wlasl__video" playsinline muted></video>
+
+    <div class="wlasl__empty" *ngIf="phase === 'idle'">
+      <button class="btn btn--secondary" (click)="start()">Start full-vocabulary mode</button>
+    </div>
+    <div class="wlasl__empty" *ngIf="phase === 'starting'">
+      <p>Connecting to the backend and loading pose/hand models&hellip;</p>
+    </div>
+    <div class="wlasl__empty wlasl__empty--error" *ngIf="phase === 'error'">
+      <p>{{ errorMessage }}</p>
+      <button class="btn btn--secondary" (click)="start()">Try again</button>
+    </div>
+  </div>
+
+  <div class="wlasl__result" *ngIf="phase === 'live'">
+    <ng-container *ngIf="latestGloss; else waiting">
+      <span class="wlasl__gloss">{{ latestGloss.gloss }}</span>
+      <span class="wlasl__confidence">{{ (latestGloss.confidence * 100) | number: '1.0-0' }}% confidence</span>
+      <div class="wlasl__confidence-bar" aria-hidden="true">
+        <span [style.width.%]="latestGloss.confidence * 100"></span>
+      </div>
+    </ng-container>
+    <ng-template #waiting>
+      <p class="wlasl__waiting">No active sign detected right now &mdash; hold a sign steady to translate.</p>
+    </ng-template>
+    <button class="btn btn--ghost" (click)="stop()">Stop</button>
+  </div>
+</div>

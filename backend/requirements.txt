@@ -1,0 +1,8 @@
+fastapi>=0.110
+uvicorn[standard]>=0.29
+numpy>=1.26
+websockets>=12.0
+
+# Optional -- only needed to run the real Pose-TGCN model instead of the
+# built-in stub. The server works fully without this installed.
+# torch>=2.2

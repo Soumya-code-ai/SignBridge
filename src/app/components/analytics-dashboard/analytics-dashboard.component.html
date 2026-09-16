@@ -1,0 +1,50 @@
+<div class="dash glass">
+  <header class="dash__header">
+    <h3>Counter Analytics</h3>
+    <button class="btn btn--ghost" (click)="close.emit()">Close</button>
+  </header>
+
+  <div class="dash__stats">
+    <div class="dash__stat">
+      <span class="dash__stat-value">{{ analytics.totalSessions }}</span>
+      <span class="dash__stat-label">Sessions today</span>
+    </div>
+    <div class="dash__stat">
+      <span class="dash__stat-value">{{ formatDuration(analytics.averageDurationMs) }}</span>
+      <span class="dash__stat-label">Avg. interaction</span>
+    </div>
+    <div class="dash__stat">
+      <span class="dash__stat-value">{{ analytics.unresolvedCount }}</span>
+      <span class="dash__stat-label">Unresolved queries</span>
+    </div>
+  </div>
+
+  <section class="dash__section">
+    <h4>Most common inquiries</h4>
+    <ul class="dash__bars">
+      <li *ngFor="let item of analytics.topInquiries">
+        <span class="dash__bar-label">{{ item.label }}</span>
+        <span class="dash__bar-track">
+          <span class="dash__bar-fill" [style.width.%]="(item.count / topInquiryMax) * 100"></span>
+        </span>
+        <span class="dash__bar-count">{{ item.count }}</span>
+      </li>
+      <li *ngIf="analytics.topInquiries.length === 0" class="dash__empty">
+        No inquiries logged yet. Start a session to see data here.
+      </li>
+    </ul>
+  </section>
+
+  <section class="dash__section">
+    <h4>Peak traffic by hour</h4>
+    <div class="dash__sparkline">
+      <span
+        *ngFor="let count of analytics.peakHours"
+        class="dash__spark"
+        [style.height.%]="(count / maxHour) * 100"
+      ></span>
+    </div>
+  </section>
+
+  <button class="btn btn--ghost dash__reset" (click)="reset()">Reset demo data</button>
+</div>
